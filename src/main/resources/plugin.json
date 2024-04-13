@@ -1,0 +1,5 @@
+{
+  "mainClass": "ru.whitebeef.beefdiscordinjector.BeefDiscordInjector",
+  "name": "BeefDiscordInjector",
+  "version": "$version"
+}

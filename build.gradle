@@ -1,0 +1,107 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version "8.1.1"
+}
+
+group = 'ru.whitebeef'
+version = '1.0.1'
+
+compileJava.options.encoding = 'UTF-8'
+
+
+def mavenRepoUsername = System.getenv("mvn-repo-username")
+def mavenRepoPassword = System.getenv("mvn-repo-token")
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+        url = uri("https://mvn.wbif.ru/private")
+        credentials {
+            username = mavenRepoUsername
+            password = mavenRepoPassword
+        }
+    }
+
+    maven {
+        url "https://repo.xikki.su/libraries"
+    }
+}
+
+shadowJar {
+    relocate('junit.textui', 'a') {
+        exclude 'junit.textui.TestRunner'
+    }
+    relocate('junit.framework', 'b') {
+        include 'junit.framework.Test*'
+    }
+}
+
+dependencies {
+
+    implementation 'org.jetbrains:annotations:20.1.0'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    compileOnly "org.hibernate.orm:hibernate-core:6.4.2.Final"
+    compileOnly 'org.springframework.data:spring-data-jpa:3.2.1'
+    compileOnly 'org.springframework.boot:spring-boot-starter-jdbc:3.0.4'
+
+    compileOnly 'com.google.code.gson:gson:2.7'
+    compileOnly 'com.google.guava:guava:11.0.2'
+    compileOnly 'org.hjson:hjson:3.1.0'
+
+    compileOnly 'ru.whitebeef:BeefCore:1.7.0'
+    implementation 'net.dv8tion:JDA:5.0.0-beta.20'
+
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.json') {
+        expand props
+    }
+}
+
+publishing {
+    publications {
+        myLib(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name = "whitebeef-repository" //  optional target repository name
+            url = "https://mvn.wbif.ru/private"
+            credentials {
+                username = mavenRepoUsername
+                password = mavenRepoPassword
+            }
+        }
+    }
+}
+
+apply plugin: "com.github.johnrengelman.shadow"
