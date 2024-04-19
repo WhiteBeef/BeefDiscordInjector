@@ -22,6 +22,7 @@ public class BeefDiscordInjector extends BeefPlugin {
 
     public BeefDiscordInjector(@NotNull PluginInfo info, @NotNull PluginClassLoader pluginClassLoader, @NotNull GenericApplicationContext pluginApplicationContext) {
         super(info, pluginClassLoader, pluginApplicationContext);
+        instance = this;
     }
 
     @Bean

@@ -31,7 +31,7 @@ public class PermissionGetUserCommand extends AbstractCommand {
 
     @Override
     protected void onCommand(String[] args) {
-        ApplicationContext applicationContext = ApplicationContextProvider.getContext();
+        ApplicationContext applicationContext = BeefDiscordInjector.getInstance().getPluginApplicationContext();
         if (args.length == 0) {
             DefaultConsumers.NO_ARGS.getConsumer().accept(args);
             return;

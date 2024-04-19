@@ -33,12 +33,11 @@ public class PermissionSetUserCommand extends AbstractCommand {
     @Override
     protected void onCommand(String[] args) {
 
-        ApplicationContext applicationContext = ApplicationContextProvider.getContext();
         if (args.length < 3) {
             DefaultConsumers.NO_ARGS.getConsumer().accept(args);
             return;
         }
-        JDA jda = applicationContext.getBean(JDA.class);
+        JDA jda = BeefDiscordInjector.getInstance().getPluginApplicationContext().getBean(JDA.class);
         String username = args[0];
         User discordUser = null;
         List<User> users = jda.getUsersByName(username, true);

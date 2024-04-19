@@ -44,14 +44,6 @@ repositories {
     }
 }
 
-shadowJar {
-    relocate('junit.textui', 'a') {
-        exclude 'junit.textui.TestRunner'
-    }
-    relocate('junit.framework', 'b') {
-        include 'junit.framework.Test*'
-    }
-}
 
 dependencies {
 

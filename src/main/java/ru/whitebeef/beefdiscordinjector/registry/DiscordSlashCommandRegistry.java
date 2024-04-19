@@ -64,7 +64,6 @@ public class DiscordSlashCommandRegistry extends ListenerAdapter {
         super.onCommandAutoCompleteInteraction(event);
 
         AbstractDiscordSlashCommand command = commands.get(event.getName());
-
         if (command == null) {
             return;
         }
@@ -74,7 +73,6 @@ public class DiscordSlashCommandRegistry extends ListenerAdapter {
         if (!user.hasPermission(command.getPermission())) {
             return;
         }
-
         command.onCommandAutoCompleteInteraction(event);
     }
 
